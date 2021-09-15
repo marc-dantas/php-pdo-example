@@ -3,9 +3,9 @@
 class Database extends PDO {
     private $connection;
 
-    public function __construct($type, $host, $database, $user, $password)
+    public function __construct()
     {
-        $this -> connection = new PDO("$type:host=$host;dbname=$database", $user, $password);
+        $this -> connection = new PDO("mysql:host=localhost;dbname=primary", 'root', '');
     }
 
     private function setParams($statement, $parameters = array())
@@ -29,10 +29,7 @@ class Database extends PDO {
         return $statement -> fetchAll(PDO::FETCH_ASSOC);
     }
 
-    public function __toString()
-    {
-        echo "";
-    }
+    public function __toString() { echo "class: Database."; }
 }
 
 ?>

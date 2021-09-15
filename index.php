@@ -2,9 +2,13 @@
 
     require_once("config.php");
 
-    $sql = new Database('mysql', 'localhost', 'dados', 'root', '');
-    $sql -> execute("");
-    $usuarios = $sql -> select("SELECT * FROM tb_usuarios");
+    $login = "1";
+    $password = "2";
+    $sql = new Database();
+    
+    $sql -> execute("INSERT INTO users (userlogin, userpassword) values(:L, :P)");
+
+    $usuarios = $sql -> select("SELECT * FROM users");
     echo json_encode($usuarios);
 
 ?>
