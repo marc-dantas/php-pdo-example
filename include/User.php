@@ -6,6 +6,19 @@
         private $password;
         private $registrationDate;
 
+        public function __construct($userlogin = "", $userpassword = "")
+        {
+            $this -> setLogin($userlogin);
+            $this -> setPassword($userpassword);
+        }
+
+        public static function search($login)
+        {
+            $db = new Database();
+            $user = $db -> select("SELECT * FROM users WHERE userlogin LIKE :LOGIN", array(":LOGIN" => $login));
+            return $user;
+        }
+
         public function getUserId()
         {
             return $this -> userId;
@@ -55,10 +68,7 @@
 
             if (count($results) > 0) {
                 $row = $results[0];
-                $this -> setUserId($row['userid']);
-                $this -> setLogin($row['userlogin']);
-                $this -> setPassword($row['userpassword']);
-                $this -> setRegistrationDate(new DateTime($row['userdate']));
+                $this -> setData($row);
             } 
         }
 
@@ -76,13 +86,6 @@
             }
         }
 
-        public static function search($login)
-        {
-            $db = new Database();
-            $user = $db -> select("SELECT * FROM users WHERE userlogin LIKE :LOGIN", array(":LOGIN" => $login));
-            return $user;
-        }
-
         public function login($login, $password)
         {
             $db = new Database();
@@ -93,12 +96,30 @@
 
             if (count($results) > 0) {
                 $row = $results[0];
-                $this -> setUserId($row['userid']);
-                $this -> setLogin($row['userlogin']);
-                $this -> setPassword($row['userpassword']);
-                $this -> setRegistrationDate(new DateTime($row['userdate']));
+                $this -> setData($row);
             } else {
                 throw new Exception("Invalid login and/or password.");
+            }
+        }
+
+        public function setData($data)
+        {
+            $this -> setUserId($data['userid']);
+            $this -> setLogin($data['userlogin']);
+            $this -> setPassword($data['userpassword']);
+            $this -> setRegistrationDate(new DateTime($data['userdate']));
+        }
+
+        public function insert()
+        {
+            $db = new Database();
+            $results = $db -> select("CALL user_insert(:LOGIN, :PASSWORD)", array(
+                ":LOGIN" => $this -> getLogin(),
+                ":PASSWORD" => $this -> getPassword()
+            ));
+
+            if (count($results) > 0) {
+                $this -> setData($results[0]);
             }
         }
 
