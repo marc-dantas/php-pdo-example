@@ -3,7 +3,7 @@
     require_once("config.php");
 
     $u = new User();
-    $u -> login("root", "admin");
+    $u -> insert();
     echo $u;
 
 ?>
