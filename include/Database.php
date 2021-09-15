@@ -20,17 +20,17 @@ class Database extends PDO {
         $statement -> bindParam($key, $value);
     }
 
-    public function query($rawQuery, $params = array()) 
+    public function command($command, $params = array()) 
     {
-        $statement = $this -> connection -> prepare($rawQuery);
+        $statement = $this -> connection -> prepare($command);
         $this -> setParams($statement, $params);
         $statement -> execute();
         return $statement;
     }
 
-    public function select($rawQuery, $params = array()):array
+    public function select($command, $params = array()):array
     {
-        $stmt = $this -> query($rawQuery, $params);
+        $stmt = $this -> command($command, $params);
         return $stmt -> fetchAll(PDO::FETCH_ASSOC);
     }
 }
