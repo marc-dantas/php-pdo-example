@@ -110,7 +110,7 @@
             $this -> setRegistrationDate(new DateTime($data['userdate']));
         }
 
-        public function copy()
+        public function insert()
         {
             $db = new Database();
             $results = $db -> select("CALL user_insert(:LOGIN, :PASSWORD)", array(
@@ -121,6 +121,15 @@
             if (count($results) > 0) {
                 $this -> setData($results[0]);
             }
+        }
+
+        public function update($login, $password) {
+            $db = new Database();
+            $db -> command("UPDATE users SET userlogin = :LOGIN, userpassword = :PASSWORD WHERE userid = :ID", array(
+                ':LOGIN' => $login,
+                ':PASSWORD' => $password,
+                ':ID' => $this -> getUserId()
+            ));
         }
 
         public function __toString()

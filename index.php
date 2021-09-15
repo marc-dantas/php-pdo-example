@@ -3,7 +3,8 @@
     require_once("config.php");
 
     $u = new User();
-    $u -> insert();
     echo $u;
-
+    $u -> loadById(1);
+    $u -> update();
+    echo $u;
 ?>
