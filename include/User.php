@@ -110,7 +110,7 @@
             $this -> setRegistrationDate(new DateTime($data['userdate']));
         }
 
-        public function insert()
+        public function copy()
         {
             $db = new Database();
             $results = $db -> select("CALL user_insert(:LOGIN, :PASSWORD)", array(
