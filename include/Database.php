@@ -3,33 +3,36 @@
 class Database extends PDO {
     private $connection;
 
-    public function __construct()
+    public function __construct() 
     {
-        $this -> connection = new PDO("mysql:host=localhost;dbname=primary", 'root', '');
+        $this -> connection = new PDO("mysql:host=localhost;dbname=dbphp7", "root", "root");
     }
 
-    private function setParams($statement, $parameters = array())
+    private function setParams($statement, $parameters = array()) 
     {
         foreach ($parameters as $key => $value) {
-            $statement -> bindParam($key, $value);
+            $this -> setParam($statement, $key, $value);
         }
     }
 
-    public function execute($command, $params = array())
+    private function setParam($statement, $key, $value)
     {
-        $statement = $this -> connection -> prepare($command);
+        $statement -> bindParam($key, $value);
+    }
+
+    public function query($rawQuery, $params = array()) 
+    {
+        $statement = $this -> connection -> prepare($rawQuery);
         $this -> setParams($statement, $params);
         $statement -> execute();
         return $statement;
     }
 
-    public function select($command, $params = array()):array
+    public function select($rawQuery, $params = array()):array
     {
-        $statement = $this -> execute($command, $params);
-        return $statement -> fetchAll(PDO::FETCH_ASSOC);
+        $stmt = $this -> query($rawQuery, $params);
+        return $stmt -> fetchAll(PDO::FETCH_ASSOC);
     }
-
-    public function __toString() { echo "class: Database."; }
 }
 
 ?>

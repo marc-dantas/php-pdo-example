@@ -58,8 +58,34 @@
                 $this -> setUserId($row['userid']);
                 $this -> setLogin($row['userlogin']);
                 $this -> setPassword($row['userpassword']);
-                $this -> setRegistrationDate($row['userdate']);
+                $this -> setRegistrationDate(new DateTime($row['userdate']));
+            } 
+        }
+
+        public static function userList($output)
+        {
+            $db = new Database();
+            $userList = $db -> select("SELECT * FROM users ORDER BY userlogin");
+            
+            if ($output == 'array') {
+                return $userList;
+            } else if ($output == 'json') {
+                return json_encode($userList);
+            } else {
+                return NULL;
             }
+        }
+
+        public function __toString()
+        {
+            return json_encode(
+                array(
+                    "userid" => $this -> getUserId(),
+                    "userlogin" => $this -> getLogin(),
+                    "userpassword" => $this -> getPassword(),
+                    "userdate" => $this -> getRegistrationDate() -> format("d/m/Y")
+                )
+            );
         }
     }
 
