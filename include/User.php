@@ -76,6 +76,32 @@
             }
         }
 
+        public static function search($login)
+        {
+            $db = new Database();
+            $user = $db -> select("SELECT * FROM users WHERE userlogin LIKE :LOGIN", array(":LOGIN" => $login));
+            return $user;
+        }
+
+        public function login($login, $password)
+        {
+            $db = new Database();
+            $results = $db -> select("SELECT * FROM users WHERE userlogin = :LOGIN AND userpassword = :PASSWORD", array(
+                ":LOGIN" => $login,
+                ":PASSWORD" => $password
+            ));
+
+            if (count($results) > 0) {
+                $row = $results[0];
+                $this -> setUserId($row['userid']);
+                $this -> setLogin($row['userlogin']);
+                $this -> setPassword($row['userpassword']);
+                $this -> setRegistrationDate(new DateTime($row['userdate']));
+            } else {
+                throw new Exception("Invalid login and/or password.");
+            }
+        }
+
         public function __toString()
         {
             return json_encode(

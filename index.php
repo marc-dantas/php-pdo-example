@@ -2,6 +2,8 @@
 
     require_once("config.php");
 
-    echo User::userList('json');
+    $u = new User();
+    $u -> login("root", "admin");
+    echo $u;
 
 ?>
