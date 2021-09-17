@@ -11,6 +11,6 @@
     - `userpassword varchar(255) not null`
     - `userdate timestamp not null default current_timestamp()`
     <br>
-- Start Apache (PHP Interpreter) and go to index.php (this is the test file, you can modify it)
+- Start Apache (PHP Interpreter) and go to `index.php` (this is the test file, you can modify it)
 
 WARNING: MySQL version is 8
