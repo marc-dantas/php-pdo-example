@@ -102,7 +102,7 @@
             }
         }
 
-        public function setData($data)
+        private function setData($data)
         {
             $this -> setUserId($data['userid']);
             $this -> setLogin($data['userlogin']);
@@ -121,6 +121,18 @@
             if (count($results) > 0) {
                 $this -> setData($results[0]);
             }
+        }
+
+        public function delete() {
+            $db = new Database();
+            $db -> command("DELETE FROM users WHERE userid = :ID", array(
+                ":ID" => $this -> getUserId()
+            ));
+
+            $this -> setUserId(0);
+            $this -> setLogin("");
+            $this -> setPassword("");
+            $this -> setRegistrationDate(new DateTime());
         }
 
         public function update($login, $password) {
